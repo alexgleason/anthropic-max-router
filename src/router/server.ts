@@ -566,7 +566,7 @@ async function startRouter() {
       );
     } else {
       logger.startup(
-        '💡 Configure your AI tool to use http://localhost:' + PORT + ' as the base URL'
+        '💡 Configure your AI tool to use http://localhost:' + PORT + '/v1 as the base URL'
       );
     }
 
