@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import express, { Request, Response } from 'express';
+import cors from 'cors';
 import readline from 'readline';
 import { getValidAccessToken, loadTokens, saveTokens } from '../token-manager.js';
 import { startOAuthFlow, exchangeCodeForTokens } from '../oauth.js';
@@ -164,6 +165,9 @@ const ANTHROPIC_API_URL = 'https://api.anthropic.com/v1/messages';
 const ANTHROPIC_VERSION = '2023-06-01';
 const ANTHROPIC_BETA =
   'oauth-2025-04-20,claude-code-20250219,interleaved-thinking-2025-05-14,fine-grained-tool-streaming-2025-05-14';
+
+// CORS middleware - allow cross-origin requests from anywhere
+app.use(cors());
 
 // Parse JSON request bodies with increased limit for large payloads
 app.use(express.json({ limit: '50mb' }));
