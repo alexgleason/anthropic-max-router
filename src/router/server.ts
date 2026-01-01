@@ -17,6 +17,7 @@ import {
 import { readFileSync } from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
+import { ANTHROPIC_MODELS } from './models.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -173,7 +174,7 @@ app.get('/health', (_req: Request, res: Response) => {
   res.json({ status: 'ok', service: 'anthropic-max-plan-router' });
 });
 
-// OpenAI Models endpoint - proxy to Anthropic API with API key
+// OpenAI Models endpoint - proxy to Anthropic API with API key or return static list
 app.get('/v1/models', async (req: Request, res: Response) => {
   try {
     // Check for API key in headers
@@ -184,17 +185,12 @@ app.get('/v1/models', async (req: Request, res: Response) => {
         : null);
 
     if (!apiKey) {
-      res.status(401).json({
-        type: 'error',
-        error: {
-          type: 'authentication_error',
-          message:
-            'x-api-key header is required for /v1/models endpoint. Note: API key is only used for this endpoint; other endpoints use OAuth authentication.',
-        },
-      });
+      // No API key provided - return static model list
+      res.status(200).json(ANTHROPIC_MODELS);
       return;
     }
 
+    // API key provided - fetch live models from Anthropic API
     const response = await fetch('https://api.anthropic.com/v1/models', {
       method: 'GET',
       headers: {
