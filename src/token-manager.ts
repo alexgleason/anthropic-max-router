@@ -13,30 +13,70 @@
  * Token management - save, load, and refresh tokens
  */
 
+import Conf from 'conf';
 import fs from 'fs/promises';
+import path from 'path';
 import type { OAuthTokens } from './types.js';
 import { refreshAccessToken } from './oauth.js';
 
-const TOKEN_FILE = '.oauth-tokens.json';
+// Global config store - tokens are saved in OS-specific config directory
+// Linux/Mac: ~/.config/anthropic-max-router/
+// Windows: %APPDATA%\anthropic-max-router\
+const config = new Conf({
+  projectName: 'anthropic-max-router',
+  // Use JSON for human readability
+  serialize: (value: unknown) => JSON.stringify(value, null, 2),
+  deserialize: JSON.parse,
+});
 
 /**
- * Save tokens to file
+ * Save tokens to global config
  */
 export async function saveTokens(tokens: OAuthTokens): Promise<void> {
-  await fs.writeFile(TOKEN_FILE, JSON.stringify(tokens, null, 2), 'utf-8');
-  console.log(`✅ Tokens saved to ${TOKEN_FILE}`);
+  config.set('tokens', tokens);
+  console.log(`✅ Tokens saved to global config: ${config.path}`);
 }
 
 /**
- * Load tokens from file
+ * Migrate tokens from old local file to global config (backwards compatibility)
+ */
+async function migrateOldTokens(): Promise<boolean> {
+  const oldTokenFile = '.oauth-tokens.json';
+
+  try {
+    // Check if old token file exists
+    const content = await fs.readFile(oldTokenFile, 'utf-8');
+    const oldTokens = JSON.parse(content) as OAuthTokens;
+
+    // Save to new global config
+    config.set('tokens', oldTokens);
+    console.log(`✅ Migrated tokens from ${oldTokenFile} to global config: ${config.path}`);
+    console.log(`   You can safely delete ${oldTokenFile} now.`);
+
+    return true;
+  } catch {
+    // Old file doesn't exist or couldn't be read - that's fine
+    return false;
+  }
+}
+
+/**
+ * Load tokens from global config
+ * Automatically migrates from old .oauth-tokens.json if found
  */
 export async function loadTokens(): Promise<OAuthTokens | null> {
-  try {
-    const content = await fs.readFile(TOKEN_FILE, 'utf-8');
-    return JSON.parse(content) as OAuthTokens;
-  } catch {
-    return null;
+  // First try to load from global config
+  let tokens = config.get('tokens') as OAuthTokens | undefined;
+
+  // If no tokens in global config, try to migrate from old location
+  if (!tokens) {
+    const migrated = await migrateOldTokens();
+    if (migrated) {
+      tokens = config.get('tokens') as OAuthTokens | undefined;
+    }
   }
+
+  return tokens || null;
 }
 
 /**

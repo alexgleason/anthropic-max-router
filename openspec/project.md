@@ -89,7 +89,9 @@ src/
 **Configuration:**
 - Environment variables via `.env` (optional)
 - Command-line arguments for runtime config
-- Token persistence in `.oauth-tokens.json`
+- Token persistence in global OS-specific config directory (via `conf` package)
+  - Linux/Mac: `~/.config/anthropic-max-router-nodejs/config.json`
+  - Windows: `%APPDATA%\anthropic-max-router-nodejs\config.json`
 - Port configurable via `--port` flag or `ROUTER_PORT` env var
 
 ### Testing Strategy
@@ -198,7 +200,8 @@ EOF
 - No streaming token refresh (must complete refresh before streaming)
 
 **Security:**
-- Tokens stored in `.oauth-tokens.json` (git-ignored)
+- Tokens stored in global OS-specific config directory (user-only access)
+- Legacy `.oauth-tokens.json` files auto-migrated on first run
 - No API keys - OAuth only
 - CSRF protection via state parameter
 - Code verifier never exposed in browser

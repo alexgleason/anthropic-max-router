@@ -360,7 +360,9 @@ print(response.choices[0].message.content)
 ## Troubleshooting
 
 ### Router not starting
-- Check: OAuth tokens present in `.oauth-tokens.json`
+- Check: OAuth tokens present in global config
+  - Linux/Mac: `~/.config/anthropic-max-router-nodejs/config.json`
+  - Windows: `%APPDATA%\anthropic-max-router-nodejs\config.json`
 - Solution: Authenticate first with `npm run router`
 
 ### Endpoint validation error
