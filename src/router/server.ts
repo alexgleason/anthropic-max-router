@@ -496,10 +496,16 @@ async function startRouter() {
   // Check if we have tokens
   let tokens = await loadTokens();
 
-  if (!tokens && !endpointConfig.allowBearerPassthrough) {
-    // OAuth is required when bearer passthrough is disabled
+  if (!tokens) {
+    // No OAuth tokens found - prompt user for authentication
     logger.startup('No OAuth tokens found. Starting authentication...');
     logger.startup('');
+    
+    if (endpointConfig.allowBearerPassthrough) {
+      logger.startup('💡 Note: You can skip OAuth and use bearer token passthrough instead.');
+      logger.startup('   Press Ctrl+C to cancel, or continue with OAuth setup.');
+      logger.startup('');
+    }
 
     try {
       const { code, verifier, state } = await startOAuthFlow(askQuestion);
@@ -521,7 +527,7 @@ async function startRouter() {
     logger.startup('✅ OAuth tokens found.');
   }
 
-  // Validate/refresh token (skip if no tokens and passthrough is enabled)
+  // Validate/refresh token
   if (tokens) {
     try {
       await getValidAccessToken();
@@ -532,8 +538,6 @@ async function startRouter() {
       rl.close();
       process.exit(1);
     }
-  } else if (endpointConfig.allowBearerPassthrough) {
-    logger.startup('⚠️  No OAuth tokens - bearer passthrough mode only');
   }
 
   // Close readline interface since we don't need it anymore
