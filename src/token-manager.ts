@@ -15,7 +15,6 @@
 
 import Conf from 'conf';
 import fs from 'fs/promises';
-import path from 'path';
 import type { OAuthTokens } from './types.js';
 import { refreshAccessToken } from './oauth.js';
 
