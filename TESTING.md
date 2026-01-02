@@ -13,8 +13,8 @@ npm run router -- --enable-openai --verbose
 The startup should show:
 ```
 📋 Endpoints:
-   POST http://localhost:3000/v1/chat/completions (OpenAI)
-   GET  http://localhost:3000/health
+   POST http://localhost:45554/v1/chat/completions (OpenAI)
+   GET  http://localhost:45554/health
 ```
 
 ### 2. Run Automated Tests (Node.js)
@@ -67,7 +67,7 @@ This tests real-world compatibility with the official OpenAI SDK, including:
 
 **PowerShell:**
 ```powershell
-curl -X POST http://localhost:3000/v1/chat/completions `
+curl -X POST http://localhost:45554/v1/chat/completions `
   -H "Content-Type: application/json" `
   -d '{
     "model": "claude-opus-4-5",
@@ -81,7 +81,7 @@ curl -X POST http://localhost:3000/v1/chat/completions `
 
 **Bash/Linux/Mac:**
 ```bash
-curl -X POST http://localhost:3000/v1/chat/completions \
+curl -X POST http://localhost:45554/v1/chat/completions \
   -H "Content-Type: application/json" \
   -d '{
     "model": "claude-opus-4-5",
@@ -105,12 +105,12 @@ Run with different models and check router logs:
 
 ```bash
 # Test claude-opus-4-5 → claude-opus-4-5
-curl -X POST http://localhost:3000/v1/chat/completions \
+curl -X POST http://localhost:45554/v1/chat/completions \
   -H "Content-Type: application/json" \
   -d '{"model": "claude-opus-4-5", "messages": [{"role": "user", "content": "Hi"}], "max_tokens": 10}'
 
 # Test claude-opus-4-5 → claude-haiku-4-5
-curl -X POST http://localhost:3000/v1/chat/completions \
+curl -X POST http://localhost:45554/v1/chat/completions \
   -H "Content-Type: application/json" \
   -d '{"model": "claude-opus-4-5", "messages": [{"role": "user", "content": "Hi"}], "max_tokens": 10}'
 ```
@@ -122,7 +122,7 @@ curl -X POST http://localhost:3000/v1/chat/completions \
 ### Test 3: Streaming
 
 ```bash
-curl -X POST http://localhost:3000/v1/chat/completions \
+curl -X POST http://localhost:45554/v1/chat/completions \
   -H "Content-Type: application/json" \
   -N \
   -d '{
@@ -142,7 +142,7 @@ curl -X POST http://localhost:3000/v1/chat/completions \
 
 Test unsupported parameter `n > 1`:
 ```bash
-curl -X POST http://localhost:3000/v1/chat/completions \
+curl -X POST http://localhost:45554/v1/chat/completions \
   -H "Content-Type: application/json" \
   -d '{
     "model": "claude-opus-4-5",
@@ -166,12 +166,12 @@ npm run router -- --enable-all-endpoints --verbose
 Send requests to both:
 ```bash
 # OpenAI endpoint
-curl -X POST http://localhost:3000/v1/chat/completions \
+curl -X POST http://localhost:45554/v1/chat/completions \
   -H "Content-Type: application/json" \
   -d '{"model": "claude-opus-4-5", "messages": [{"role": "user", "content": "Hi from OpenAI"}], "max_tokens": 20}'
 
 # Anthropic endpoint
-curl -X POST http://localhost:3000/v1/messages \
+curl -X POST http://localhost:45554/v1/messages \
   -H "Content-Type: application/json" \
   -d '{"model": "claude-opus-4-5", "messages": [{"role": "user", "content": "Hi from Anthropic"}], "max_tokens": 20}'
 ```
@@ -197,7 +197,7 @@ import OpenAI from 'openai';
 
 const client = new OpenAI({
   apiKey: 'not-used',
-  baseURL: 'http://localhost:3000/v1',
+  baseURL: 'http://localhost:45554/v1',
 });
 
 async function test() {
@@ -249,7 +249,7 @@ ANTHROPIC_DEFAULT_MODEL=claude-haiku-4-5 npm run router -- --enable-openai --ver
 
 Send a request:
 ```bash
-curl -X POST http://localhost:3000/v1/chat/completions \
+curl -X POST http://localhost:45554/v1/chat/completions \
   -H "Content-Type: application/json" \
   -d '{"model": "claude-opus-4-5", "messages": [{"role": "user", "content": "Hi"}], "max_tokens": 10}'
 ```
@@ -273,7 +273,7 @@ npm run router -- --enable-openai --verbose
 
 Test:
 ```bash
-curl -X POST http://localhost:3000/v1/chat/completions \
+curl -X POST http://localhost:45554/v1/chat/completions \
   -H "Content-Type: application/json" \
   -d '{"model": "my-custom-model", "messages": [{"role": "user", "content": "Hi"}], "max_tokens": 10}'
 ```
@@ -333,7 +333,7 @@ from langchain_openai import ChatOpenAI
 llm = ChatOpenAI(
     model="claude-opus-4-5",
     api_key="not-used",
-    base_url="http://localhost:3000/v1"
+    base_url="http://localhost:45554/v1"
 )
 
 response = llm.invoke("Say hello!")
@@ -348,7 +348,7 @@ import litellm
 response = litellm.completion(
     model="claude-opus-4-5",
     messages=[{"role": "user", "content": "Hello!"}],
-    api_base="http://localhost:3000/v1",
+    api_base="http://localhost:45554/v1",
     api_key="not-used"
 )
 
@@ -369,7 +369,7 @@ print(response.choices[0].message.content)
 
 ### Connection refused
 - Check: Router is running on correct port
-- Solution: Verify with `curl http://localhost:3000/health`
+- Solution: Verify with `curl http://localhost:45554/health`
 
 ### Model mapping not working
 - Check: Router logs in verbose mode

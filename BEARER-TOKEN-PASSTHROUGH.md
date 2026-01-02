@@ -49,7 +49,7 @@ npm run router
 
 Make a request with your Anthropic API key:
 ```bash
-curl -X POST http://localhost:3000/v1/messages \
+curl -X POST http://localhost:45554/v1/messages \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer YOUR_ANTHROPIC_API_KEY" \
   -d '{
@@ -70,7 +70,7 @@ npm run router -- --disable-bearer-passthrough
 
 Make a request (even with bearer token):
 ```bash
-curl -X POST http://localhost:3000/v1/messages \
+curl -X POST http://localhost:45554/v1/messages \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer ANY_TOKEN_HERE" \
   -d '{
@@ -86,7 +86,7 @@ curl -X POST http://localhost:3000/v1/messages \
 
 Works with OpenAI-compatible endpoint too:
 ```bash
-curl -X POST http://localhost:3000/v1/chat/completions \
+curl -X POST http://localhost:45554/v1/chat/completions \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer YOUR_ANTHROPIC_API_KEY" \
   -d '{

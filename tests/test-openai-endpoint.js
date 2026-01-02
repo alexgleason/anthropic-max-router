@@ -17,7 +17,7 @@
  *      node test-openai-endpoint.js
  */
 
-const BASE_URL = 'http://localhost:3000';
+const BASE_URL = 'http://localhost:45554';
 
 // ANSI color codes for pretty output
 const colors = {
@@ -333,7 +333,7 @@ async function runAllTests() {
   log('Prerequisites:', 'yellow');
   log('  1. Router must be running with: npm run router -- --enable-openai', 'yellow');
   log('  2. OAuth authentication must be completed', 'yellow');
-  log('  3. Router should be on http://localhost:3000\n', 'yellow');
+  log('  3. Router should be on http://localhost:45554\n', 'yellow');
 
   const results = {
     passed: 0,

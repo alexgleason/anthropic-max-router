@@ -6,7 +6,7 @@
  */
 
 async function testRouter() {
-  const ROUTER_URL = 'http://localhost:3000';
+  const ROUTER_URL = 'http://localhost:45554';
 
   // Test 1: Health check
   console.log('Testing health endpoint...');

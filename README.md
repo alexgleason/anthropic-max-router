@@ -54,7 +54,7 @@ npm start
 ```
 
 ### 🚀 **2. API Router** - Production Ready
-A standalone HTTP proxy with **both Anthropic and OpenAI endpoints** that lets ANY AI tool use your MAX Plan subscription via `http://localhost:3000`.
+A standalone HTTP proxy with **both Anthropic and OpenAI endpoints** that lets ANY AI tool use your MAX Plan subscription via `http://localhost:45554`.
 
 **Works with:** Anthropic SDK, OpenAI SDK, LangChain, LiteLLM, and any tool that supports custom base URLs!
 
@@ -104,7 +104,7 @@ npx anthropic-max-router
 
 That's it! The router will:
 1. Automatically authenticate you via OAuth (first run only)
-2. Start the proxy server on http://localhost:3000 with **both Anthropic and OpenAI endpoints**
+2. Start the proxy server on http://localhost:45554 with **both Anthropic and OpenAI endpoints**
 3. Let you use MAX Plan billing from **any tool** - whether it uses Anthropic or OpenAI format!
 
 ### With Options
@@ -207,7 +207,7 @@ A standalone HTTP proxy server with **dual API endpoints** (Anthropic + OpenAI) 
 - `/v1/messages` - Native Anthropic Messages API
 - `/v1/chat/completions` - OpenAI Chat Completions API (auto-translates to Anthropic)
 
-Works with tools built for either Anthropic or OpenAI - just point them to `http://localhost:3000`!
+Works with tools built for either Anthropic or OpenAI - just point them to `http://localhost:45554`!
 
 ### How It Works
 
@@ -216,7 +216,7 @@ Works with tools built for either Anthropic or OpenAI - just point them to `http
 │   Your AI Tool      │
 │   (any application) │
 └──────────┬──────────┘
-           │ http://localhost:3000
+           │ http://localhost:45554
            ▼
 ┌─────────────────────────────────────┐
 │  Router (This Application)          │
@@ -247,7 +247,7 @@ Works with tools built for either Anthropic or OpenAI - just point them to `http
 ### Basic Usage
 
 ```bash
-# Start router (default: port 3000, medium verbosity)
+# Start router (default: port 45554, medium verbosity)
 npm run router
 
 # With options
@@ -268,7 +268,7 @@ npm run router -- -p 8080 --verbose        # Combine options
 |--------|-------|-------------|
 | `--help` | `-h` | Show help message |
 | `--version` | `-v` | Show version number |
-| `--port PORT` | `-p` | Set port (default: 3000) |
+| `--port PORT` | `-p` | Set port (default: 45554) |
 | **Endpoint Control** | | |
 | `--enable-anthropic` | | Enable Anthropic /v1/messages endpoint (default: enabled) |
 | `--disable-anthropic` | | Disable Anthropic endpoint |
@@ -343,7 +343,7 @@ The router exposes **both Anthropic and OpenAI endpoints** by default:
 Native Anthropic format. Use with Anthropic SDK or any Anthropic-compatible tool.
 
 ```bash
-curl -X POST http://localhost:3000/v1/messages \
+curl -X POST http://localhost:45554/v1/messages \
   -H "Content-Type: application/json" \
   -d '{"model":"claude-sonnet-4-5","max_tokens":100,"messages":[{"role":"user","content":"Hello"}]}'
 ```
@@ -352,7 +352,7 @@ curl -X POST http://localhost:3000/v1/messages \
 OpenAI-compatible format with automatic translation to Anthropic. Use with OpenAI SDK, LangChain, LiteLLM, etc.
 
 ```bash
-curl -X POST http://localhost:3000/v1/chat/completions \
+curl -X POST http://localhost:45554/v1/chat/completions \
   -H "Content-Type: application/json" \
   -d '{"model":"gpt-4","messages":[{"role":"user","content":"Hello"}]}'
 ```
@@ -363,7 +363,7 @@ Returns a list of available Claude models from Anthropic.
 **⚠️ Important:** This endpoint requires an Anthropic API key (not OAuth). The API key is **only used for this endpoint** - all other endpoints use OAuth authentication.
 
 ```bash
-curl http://localhost:3000/v1/models \
+curl http://localhost:45554/v1/models \
   -H "x-api-key: sk-ant-api03-..."
 ```
 
@@ -382,7 +382,7 @@ curl http://localhost:3000/v1/models \
 
 #### **`GET /health`** - Health check
 ```bash
-curl http://localhost:3000/health
+curl http://localhost:45554/health
 # Returns: {"status":"ok","service":"anthropic-max-plan-router"}
 ```
 
@@ -394,13 +394,13 @@ The router supports the OpenAI Chat Completions API format, enabling **zero-code
 
 | What You Have | What You Get | How |
 |---------------|--------------|-----|
-| Tool built for Anthropic | Use native Anthropic endpoint | Point to `http://localhost:3000` |
-| Tool built for OpenAI | Use OpenAI-compatible endpoint | Point to `http://localhost:3000` |
+| Tool built for Anthropic | Use native Anthropic endpoint | Point to `http://localhost:45554` |
+| Tool built for OpenAI | Use OpenAI-compatible endpoint | Point to `http://localhost:45554` |
 | Both types of tools | Use both simultaneously! | Both endpoints work at the same time |
 
 #### Why OpenAI Compatibility?
 
-Many AI tools and libraries (Python OpenAI SDK, LangChain, etc.) are built exclusively for OpenAI's API format. With the OpenAI-compatible endpoint, these tools can use your MAX Plan subscription without any code changes - just point them to `http://localhost:3000`.
+Many AI tools and libraries (Python OpenAI SDK, LangChain, etc.) are built exclusively for OpenAI's API format. With the OpenAI-compatible endpoint, these tools can use your MAX Plan subscription without any code changes - just point them to `http://localhost:45554`.
 
 #### Using OpenAI Compatibility
 
@@ -497,7 +497,7 @@ from openai import OpenAI
 
 client = OpenAI(
     api_key="not-used",  # Can be anything - router handles auth
-    base_url="http://localhost:3000/v1",  # Note: include /v1
+    base_url="http://localhost:45554/v1",  # Note: include /v1
 )
 
 response = client.chat.completions.create(
@@ -517,7 +517,7 @@ import OpenAI from 'openai';
 
 const client = new OpenAI({
   apiKey: 'not-used',  // Can be anything - router handles auth
-  baseURL: 'http://localhost:3000/v1',  // Note: include /v1
+  baseURL: 'http://localhost:45554/v1',  // Note: include /v1
 });
 
 const response = await client.chat.completions.create({
@@ -533,7 +533,7 @@ console.log(response.choices[0].message.content);
 
 **cURL:**
 ```bash
-curl -X POST http://localhost:3000/v1/chat/completions \
+curl -X POST http://localhost:45554/v1/chat/completions \
   -H "Content-Type: application/json" \
   -d '{
     "model": "gpt-4",
@@ -553,7 +553,7 @@ from openai import OpenAI
 
 client = OpenAI(
     api_key="not-used",
-    base_url="http://localhost:3000/v1",
+    base_url="http://localhost:45554/v1",
 )
 
 stream = client.chat.completions.create(
@@ -604,14 +604,14 @@ Send a test request:
 
 **PowerShell:**
 ```powershell
-curl -X POST http://localhost:3000/v1/messages `
+curl -X POST http://localhost:45554/v1/messages `
   -H "Content-Type: application/json" `
   -d '{"model":"claude-sonnet-4-5","max_tokens":50,"messages":[{"role":"user","content":"Say hello in one short sentence."}]}'
 ```
 
 **Bash/Linux/Mac:**
 ```bash
-curl -X POST http://localhost:3000/v1/messages \
+curl -X POST http://localhost:45554/v1/messages \
   -H "Content-Type: application/json" \
   -d '{
     "model": "claude-sonnet-4-5",
@@ -628,7 +628,7 @@ You should see the request logged in your router terminal and get a JSON respons
 
 Configure any AI tool that supports custom base URLs to point to:
 ```
-http://localhost:3000
+http://localhost:45554
 ```
 
 > **🔑 Important Note About API Keys**
@@ -640,7 +640,7 @@ http://localhost:3000
 **JavaScript/TypeScript:**
 ```javascript
 const client = new AnthropicClient({
-  baseURL: 'http://localhost:3000',
+  baseURL: 'http://localhost:45554',
   // No API key needed - router handles authentication
 });
 ```
@@ -651,7 +651,7 @@ import anthropic
 
 client = anthropic.Anthropic(
     api_key="not-used",  # Can be anything - router handles auth
-    base_url="http://localhost:3000",
+    base_url="http://localhost:45554",
 )
 
 response = client.messages.create(

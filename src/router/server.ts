@@ -118,7 +118,7 @@ Usage: npm run router [options]
 Options:
   -h, --help                Show this help message
   -v, --version             Show version number
-  -p, --port PORT           Port to listen on (default: 3000)
+  -p, --port PORT           Port to listen on (default: 45554)
 
   Endpoint control (default: both enabled):
   --enable-anthropic        Enable Anthropic /v1/messages endpoint (default: enabled)
@@ -137,7 +137,7 @@ Options:
   -V, --verbose             Maximum logging - full request/response bodies
 
 Environment variables:
-  ROUTER_PORT               Port to listen on (default: 3000)
+  ROUTER_PORT               Port to listen on (default: 45554)
   ANTHROPIC_DEFAULT_MODEL   Override model mapping (e.g., claude-haiku-4-5)
 
 Examples:
@@ -154,7 +154,7 @@ More info: https://github.com/nsxdavid/anthropic-max-router
 `);
 }
 
-let PORT = process.env.ROUTER_PORT ? parseInt(process.env.ROUTER_PORT) : 3000;
+let PORT = process.env.ROUTER_PORT ? parseInt(process.env.ROUTER_PORT) : 45554;
 parseArgs();
 
 const app = express();

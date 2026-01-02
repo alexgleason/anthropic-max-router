@@ -48,7 +48,7 @@ def test1_basic_completion():
     try:
         client = OpenAI(
             api_key="not-used",  # Router handles auth
-            base_url="http://localhost:3000/v1",
+            base_url="http://localhost:45554/v1",
         )
 
         response = client.chat.completions.create(
@@ -80,7 +80,7 @@ def test2_streaming():
     try:
         client = OpenAI(
             api_key="not-used",
-            base_url="http://localhost:3000/v1",
+            base_url="http://localhost:45554/v1",
         )
 
         log('✅ Starting stream...', 'GREEN')
@@ -121,7 +121,7 @@ def test3_multiple_models():
         try:
             client = OpenAI(
                 api_key="not-used",
-                base_url="http://localhost:3000/v1",
+                base_url="http://localhost:45554/v1",
             )
 
             response = client.chat.completions.create(
@@ -147,7 +147,7 @@ def test4_system_messages():
     try:
         client = OpenAI(
             api_key="not-used",
-            base_url="http://localhost:3000/v1",
+            base_url="http://localhost:45554/v1",
         )
 
         response = client.chat.completions.create(
@@ -177,7 +177,7 @@ def test5_error_handling():
     try:
         client = OpenAI(
             api_key="not-used",
-            base_url="http://localhost:3000/v1",
+            base_url="http://localhost:45554/v1",
         )
 
         response = client.chat.completions.create(
@@ -206,7 +206,7 @@ def run_all_tests():
     log('Prerequisites:', 'YELLOW')
     log('  1. Router running with: npm run router -- --enable-openai', 'YELLOW')
     log('  2. OpenAI SDK installed: pip install openai', 'YELLOW')
-    log('  3. Router on http://localhost:3000\n', 'YELLOW')
+    log('  3. Router on http://localhost:45554\n', 'YELLOW')
 
     results = {'passed': 0, 'failed': 0}
 
